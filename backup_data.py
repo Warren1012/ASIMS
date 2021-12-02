@@ -1,12 +1,16 @@
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
-
-gauth = GoogleAuth()
-drive = GoogleDrive(gauth)
-
-uploadlist=['inventory_file.txt','login_info.txt','revenuelog.txt']
-
-for file in uploadlist:
-  gfile=drive.CreateFile({'parents': [{'id': '1jufZmKHgYz2-hdb4AYGu0K7oToFp5Mqo'}]})
-  gfile.SetContentFile(file)
-  gfile.Upload()
+import json
+import requests
+headers = {"Authorization": "Bearer ya29.a0ARrdaM89siORpFtrJLd_JeFEo3bbAx_2AqCmefB4TN7yamRDfQI5VLS3xqUvLBcctBYiJ0FgSu7cqIC0Cz_MfMm_dpt406uPb8XL5T__6TKrSBG88VKESlsw9vJUoW7yNrubUp3tu-atXyHKfM7VHk5LQfw0"}
+para = {
+    "name": "Inventory.txt",
+}
+files = {
+    'data': ('metadata', json.dumps(para), 'application/json; charset=UTF-8'),
+    'file': open("./Inventory.txt", "rb")
+}
+r = requests.post(
+    "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart",
+    headers=headers,
+    files=files
+)
+print("Sucess,Inventory Sent to Drive!")
